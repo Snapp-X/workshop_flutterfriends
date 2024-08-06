@@ -34,7 +34,7 @@ class ServoController(dbus.service.Object):
         self.servo = servo.ContinuousServo(self.pca.channels[0])
 
     @dbus.service.method("de.snapp.ServoControllerInterface",
-                         in_signature='i', out_signature='s')
+                         in_signature='', out_signature='s')
     def GetMotorState(self):
         print("GetMotorState request:", session_bus.get_unique_name())
         return str(self.servo.throttle)
@@ -42,15 +42,31 @@ class ServoController(dbus.service.Object):
     @dbus.service.method("de.snapp.ServoControllerInterface",
                          in_signature='dd', out_signature='b')
     def ThrottleMotor(self, duration, throttle):
-        print("ThrottleMotor request:", session_bus.get_unique_name())
-        print("Duration:", duration)
-        print("Throttle:", throttle)
-        self.servo.throttle = throttle
-        time.sleep(duration)
-        self.servo.throttle = 0.0
-        time.sleep(0.1)
-        return True
-    
+        try:
+            print("ThrottleMotor request:", session_bus.get_unique_name())
+            print("Duration:", duration)
+            print("Throttle:", throttle)
+            
+            # Set the throttle
+            self.servo.throttle = throttle
+            
+            # Sleep for the specified duration
+            time.sleep(duration)
+            
+            # Stop the motor
+            self.servo.throttle = 0.0
+            
+            # Briefly sleep to ensure the stop command is processed
+            time.sleep(0.1)
+            
+            return True
+        except Exception as e:
+            # Log the exception
+            print(f"Error in ThrottleMotor: {e}")
+            
+            # Return False to indicate failure
+            return False
+
     @dbus.service.method("de.snapp.ServoControllerInterface",
                          in_signature='', out_signature='')
     def Exit(self):
