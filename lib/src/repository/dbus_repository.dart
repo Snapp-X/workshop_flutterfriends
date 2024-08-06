@@ -1,18 +1,5 @@
 import 'package:dbus/dbus.dart';
 
-final dBusClient = DBusClient.session();
-
-final dataSource = DBusDataSource(
-  client: dBusClient,
-  remoteObject: DBusRemoteObject(
-    dBusClient,
-    name: 'de.snapp.ServoControllerService',
-    path: DBusObjectPath('/ServoController'),
-  ),
-);
-
-final dBusRepository = DBusRepository(dataSource: dataSource);
-
 class DBusRepository {
   const DBusRepository({required this.dataSource});
 
@@ -59,6 +46,19 @@ class DBusDataSource {
 
   final DBusClient client;
   final DBusRemoteObject remoteObject;
+
+  factory DBusDataSource.session() {
+    final dBusClient = DBusClient.session();
+
+    return DBusDataSource(
+      client: dBusClient,
+      remoteObject: DBusRemoteObject(
+        dBusClient,
+        name: 'de.snapp.ServoControllerService',
+        path: DBusObjectPath('/ServoController'),
+      ),
+    );
+  }
 
   Future<DBusMethodSuccessResponse> getMotorState() async {
     final response = await remoteObject.callMethod(
