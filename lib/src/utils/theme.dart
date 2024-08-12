@@ -48,6 +48,6 @@ ThemeData buildTheme({Brightness brightness = Brightness.light}) {
 class ThemeColors {
   const ThemeColors._();
 
-  static const Color green = Color(0xFF71A142);
-  static const Color darkGreen = Color(0xFF035D20);
+  static const Color primary = Color(0xFF71A142);
+  static const Color primaryDark = Color(0xFF035D20);
 }

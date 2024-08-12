@@ -11,13 +11,13 @@ class MixPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: ThemeColors.green,
+      backgroundColor: ThemeColors.primary,
       body: Body(
         title: 'Mix your M&Ms',
         description:
             'Swipe the slider and choose how many M&Ms you want to mix.',
-        lightColor: ThemeColors.green,
-        darkColor: ThemeColors.darkGreen,
+        lightColor: ThemeColors.primary,
+        darkColor: ThemeColors.primaryDark,
       ),
     );
   }
