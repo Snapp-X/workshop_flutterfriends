@@ -88,13 +88,7 @@ class _BodyState extends State<Body> {
                       activeColor: widget.darkColor,
                       inactiveColor: Colors.white54,
                       label: sliderValue.round().toString(),
-                      onChanged: loading
-                          ? null
-                          : (value) {
-                              setState(() {
-                                sliderValue = value;
-                              });
-                            },
+                      onChanged: loading ? null : onSliderValueChanged,
                     );
                   },
                 ),
@@ -111,13 +105,7 @@ class _BodyState extends State<Body> {
                       backgroundColor: widget.darkColor,
                       foregroundColor: widget.lightColor,
                     ),
-                    onPressed: loading
-                        ? null
-                        : () {
-                            context
-                                .read<MixCubit>()
-                                .mixCandies(sliderValue.toInt());
-                          },
+                    onPressed: loading ? null : onButtonPressed,
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -151,5 +139,15 @@ class _BodyState extends State<Body> {
         ),
       ),
     );
+  }
+
+  void onSliderValueChanged(double value) {
+    setState(() {
+      sliderValue = value;
+    });
+  }
+
+  void onButtonPressed() {
+    context.read<MixCubit>().mixCandies(sliderValue.toInt());
   }
 }
