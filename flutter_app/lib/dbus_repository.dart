@@ -5,22 +5,6 @@ class DBusRepository {
 
   final DBusDataSource dataSource;
 
-  /// returns the state of the specified motor
-  /// the [motorId] is the id of the motor to get its state
-  Future<String> getMotorState() async {
-    final response = await dataSource.getMotorState();
-
-    final returnValue = response.returnValues[0];
-
-    final parsedResult = returnValue.toNative();
-
-    if (parsedResult is! String) {
-      throw Exception('Invalid response type');
-    }
-
-    return parsedResult;
-  }
-
   /// The motor will be throttled for the specified duration
   /// the [duration] is the duration in seconds
   ///
@@ -60,17 +44,6 @@ class DBusDataSource {
     );
   }
 
-  Future<DBusMethodSuccessResponse> getMotorState() async {
-    final response = await remoteObject.callMethod(
-      'de.snapp.ServoControllerInterface',
-      'GetMotorState',
-      [],
-      replySignature: DBusSignature('s'),
-    );
-
-    return response;
-  }
-
   /// The motor will be throttled for the specified duration
   /// the [duration] is the duration in seconds
   ///
@@ -87,17 +60,6 @@ class DBusDataSource {
         DBusDouble(speed),
       ],
       replySignature: DBusSignature('b'),
-    );
-
-    return response;
-  }
-
-  /// Close the DBus python session
-  Future<DBusMethodSuccessResponse> closeDBusSession() async {
-    final response = await remoteObject.callMethod(
-      'de.snapp.ServoControllerInterface',
-      'Exit',
-      [],
     );
 
     return response;
