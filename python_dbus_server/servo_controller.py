@@ -37,12 +37,6 @@ class ServoController(dbus.service.Object):
         self.servo = servo.ContinuousServo(self.pca.channels[0])
 
     @dbus.service.method("de.snapp.ServoControllerInterface",
-                         in_signature='', out_signature='s')
-    def GetMotorState(self):
-        print("GetMotorState request:", session_bus.get_unique_name())
-        return str(self.servo.throttle)
-
-    @dbus.service.method("de.snapp.ServoControllerInterface",
                          in_signature='dd', out_signature='b')
     def ThrottleMotor(self, duration, throttle):
         try:
