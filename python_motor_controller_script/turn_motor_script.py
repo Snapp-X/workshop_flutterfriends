@@ -1,7 +1,11 @@
+# Try to run this script with the following command:
+# python3 turn_motor_script.py
+
 import time  # Import time module to introduce delays in the program
 import busio  # Import busio module to set up I2C communication
 from adafruit_motor import servo  # Import servo module to control the servo motor
-from adafruit_pca9685 import PCA9685  # Import PCA9685 module to interface with the PCA9685 PWM controller
+# Import PCA9685 module to interface with the PCA9685 PWM controller
+from adafruit_pca9685 import PCA9685
 from board import SCL, SDA  # Import specific pins SCL and SDA for I2C communication
 
 # Initialize I2C communication on the Raspberry Pi using the SCL and SDA pins.

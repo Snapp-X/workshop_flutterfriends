@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+# Try to run this script with the following command:
+# python3 servo_controller.py
 
 from __future__ import print_function
 from datetime import datetime, timezone
@@ -21,8 +22,10 @@ ServoController DBus Service Started Successfully
 Now we just need to wait for the client to call our methods :) 
 """
 
+
 class ServoController(dbus.service.Object):
     """ Python class to control the servo motors using PCA9685"""
+
     def __init__(self, bus, path):
         super(ServoController, self).__init__(bus, path)
 
@@ -38,7 +41,7 @@ class ServoController(dbus.service.Object):
     def GetMotorState(self):
         print("GetMotorState request:", session_bus.get_unique_name())
         return str(self.servo.throttle)
-    
+
     @dbus.service.method("de.snapp.ServoControllerInterface",
                          in_signature='dd', out_signature='b')
     def ThrottleMotor(self, duration, throttle):
@@ -46,24 +49,24 @@ class ServoController(dbus.service.Object):
             print("ThrottleMotor request:", session_bus.get_unique_name())
             print("Duration:", duration)
             print("Throttle:", throttle)
-            
+
             # Set the throttle
             self.servo.throttle = throttle
-            
+
             # Sleep for the specified duration
             time.sleep(duration)
-            
+
             # Stop the motor
             self.servo.throttle = 0.0
-            
+
             # Briefly sleep to ensure the stop command is processed
             time.sleep(0.1)
-            
+
             return True
         except Exception as e:
             # Log the exception
             print(f"Error in ThrottleMotor: {e}")
-            
+
             # Return False to indicate failure
             return False
 
@@ -73,17 +76,16 @@ class ServoController(dbus.service.Object):
         self.pca.deinit()
         mainloop.quit()
 
+
 if __name__ == '__main__':
     dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
 
     session_bus = dbus.SessionBus()
     name = dbus.service.BusName("de.snapp.ServoControllerService", session_bus)
     controller = ServoController(session_bus, '/ServoController')
-    
+
     # Run the main loop
     mainloop = GLib.MainLoop()
     print(usage)
 
     mainloop.run()
-    
-    
