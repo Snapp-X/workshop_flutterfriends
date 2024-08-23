@@ -20,30 +20,6 @@ Future<void> main(List<String> arguments) async {
     path: DBusObjectPath(objectPath),
   );
 
-  // Call the 'GetMotorState' method on the remote D-Bus object to get the motor's state.
-  // The method is expected to return a string ('s' in D-Bus signature).
-  final getStateResponse = await remoteObject.callMethod(
-    interfaceName,
-    'GetMotorState',
-    [],
-    replySignature: DBusSignature('s'),
-  );
-
-  log(
-    'response | ${getStateResponse.values}',
-    name: 'GetMotorState',
-  );
-  log(
-    'response value type | ${getStateResponse.values.first.toNative().runtimeType}',
-    name: 'GetMotorState',
-  );
-  log(
-    'response value | ${getStateResponse.values.first.toNative()}',
-    name: 'GetMotorState',
-  );
-
-  await Future.delayed(const Duration(seconds: 3));
-
   // Call the 'ThrottleMotor' method on the remote D-Bus object to control the motor's throttle.
   // The method is expected to return a boolean ('b' in D-Bus signature).
   final throttleMotorResponse = await remoteObject.callMethod(
